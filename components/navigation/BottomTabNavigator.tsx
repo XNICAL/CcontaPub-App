@@ -1,43 +1,64 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-
-import TabOneScreen from "../../app/TabOneScreen";
-import TabTwoScreen from "../../app/TabTwoScreen";
-
-const Tab = createBottomTabNavigator();
-
-type IconName = 'home-outline' | 'information-circle-outline' | 'list-outline' | 'help-outline';
+// BottomTabNavigator.tsx
+import React from 'react';
+import { View, StyleSheet } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import { Link, usePathname } from "expo-router";
 
 export default function BottomTabNavigator() {
+  const pathname = usePathname(); // Obtener la ruta actual
+
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size }) => {
-          let iconName: IconName;
-
-          switch (route.name) {
-            case "Home":
-              iconName = "home-outline";
-              break;
-            case "TabOne":
-              iconName = "information-circle-outline";
-              break;
-            case "TabTwo":
-              iconName = "list-outline";
-              break;
-            default:
-              iconName = "help-outline";
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: "tomato",
-        tabBarInactiveTintColor: "gray",
-      })}
-    >
-      
-      <Tab.Screen name="TabOne" component={TabOneScreen} />
-      <Tab.Screen name="TabTwo" component={TabTwoScreen} />
-    </Tab.Navigator>
+    <View style={styles.tabBar}>
+      <Link href="./ProfileScreen" style={styles.icon}>
+        <Ionicons
+          name="person-outline"
+          size={24}
+          color={pathname === "/ProfileScreen" ? "white" : "gray"} // Cambiar color si es la ruta activa
+        />
+      </Link>
+      <Link href="./MessagesScreen" style={styles.icon}>
+        <Ionicons
+          name="chatbox-outline"
+          size={24}
+          color={pathname === "/MessagesScreen" ? "white" : "gray"} // Cambiar color si es la ruta activa
+        />
+      </Link>
+      <Link href="/HomeScreen" style={styles.icon}>
+        <Ionicons
+          name="home-outline"
+          size={24}
+          color={pathname === "/HomeScreen" ? "white" : "gray"} // Cambiar color si es la ruta activa
+        />
+      </Link>
+      <Link href="./NotificationsScreen" style={styles.icon}>
+        <Ionicons
+          name="notifications-outline"
+          size={24}
+          color={pathname === "/NotificationsScreen" ? "white" : "gray"} // Cambiar color si es la ruta activa
+        />
+      </Link>
+      <Link href="./SettingsScreen" style={styles.icon}>
+        <Ionicons
+          name="settings-outline"
+          size={24}
+          color={pathname === "/SettingsScreen" ? "white" : "gray"} // Cambiar color si es la ruta activa
+        />
+      </Link>
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    backgroundColor: '#000',
+    paddingVertical: 10,
+    borderRadius: 20,
+    marginHorizontal: 20,
+    marginBottom: 20,
+  },
+  icon: {
+    padding: 10,
+  },
+});
