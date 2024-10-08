@@ -1,67 +1,96 @@
 import React from 'react';
-import { TouchableOpacity, Text, TextInput, StyleSheet, View } from 'react-native';
-import { AntDesign, FontAwesome } from '@expo/vector-icons';
+import { TouchableOpacity, Text, TextInput, View, StyleSheet, NativeSyntheticEvent, TextInputSubmitEditingEventData } from 'react-native';
+import { Feather } from '@expo/vector-icons';
 
-type ButtonProps = {
-  title: string;
-  onPress: () => void;
-  style?: object;
-};
+export const CustomButton: React.FC<{ title: string; onPress: () => void; primary?: boolean }> = ({ title, onPress, primary = false }) => (
+  <TouchableOpacity 
+    style={[styles.button, primary ? styles.primaryButton : styles.secondaryButton]} 
+    onPress={onPress}
+  >
+    <Text style={[styles.buttonText, primary ? styles.primaryButtonText : styles.secondaryButtonText]}>
+      {title}
+    </Text>
+  </TouchableOpacity>
+);
 
-type IconButtonProps = {
-  iconName: string;
-  onPress: () => void;
-  style?: object;
-};
+export const InputField: React.FC<{ placeholder: string; label: string; secureTextEntry?: boolean; onSubmitEditing?: (e: NativeSyntheticEvent<TextInputSubmitEditingEventData>) => void }>= ({ placeholder, label, secureTextEntry = false }) => (
+  <View style={styles.inputContainer}>
+    <Text style={styles.inputLabel}>{label}</Text>
+    <TextInput 
+      style={styles.input} 
+      placeholder={placeholder}
+      placeholderTextColor="#999"
+      secureTextEntry={secureTextEntry}
+    />
+  </View>
+);
 
-// Botón reutilizable
-export const CustomButton = ({ title, onPress, style }: ButtonProps) => {
-  return (
-    <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
+export const BackArrow: React.FC<{onPress: () => void;}> = ({ onPress }) => (
+  <TouchableOpacity style={styles.backArrow} onPress={onPress}>
+    <Feather name="chevron-left" size={24} color="white" />
+  </TouchableOpacity>
+);
 
-// Botón con icono reutilizable
-export const IconButton = ({ iconName, onPress, style }: IconButtonProps) => {
-    return (
-      <TouchableOpacity style={[styles.iconButton, style]} onPress={onPress}>
-        <AntDesign name={iconName as keyof typeof AntDesign.glyphMap} size={24} color="white" />
-      </TouchableOpacity>
-    );
-  };
-
-// Caja de texto reutilizable
-export const CustomInput = () => {
-  return <TextInput style={styles.input} placeholder="Escribe aquí..." />;
-};
+export const GoogleSignInButton = () => (
+  <TouchableOpacity style={styles.googleButton}>
+    <Text style={styles.googleButtonText}>Iniciar sesion con google</Text>
+  </TouchableOpacity>
+);
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#ADD8E6', // Azul claro
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    borderRadius: 25,
-    alignItems: 'center',
+    width: '100%',
+    padding: 15,
+    borderRadius: 5,
     marginVertical: 10,
+    alignItems: 'center',
+  },
+  primaryButton: {
+    backgroundColor: '#3498db',
+  },
+  secondaryButton: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: '#3498db',
   },
   buttonText: {
-    color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  input: {
-    backgroundColor: '#D3D3D3', // Color plomo claro
-    padding: 10,
-    borderRadius: 25,
-    marginVertical: 10,
+  primaryButtonText: {
+    color: 'white',
   },
-  iconButton: {
-    backgroundColor: '#ADD8E6', // Azul claro
-    padding: 12,
-    borderRadius: 50,
+  secondaryButtonText: {
+    color: '#3498db',
+  },
+  inputContainer: {
+    width: '100%',
+    marginBottom: 15,
+  },
+  inputLabel: {
+    color: 'white',
+    marginBottom: 5,
+  },
+  input: {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+  },
+  backArrow: {
+    position: 'absolute',
+    top: 40,
+    left: 20,
+    zIndex: 10,
+  },
+  googleButton: {
+    flexDirection: 'row',
     alignItems: 'center',
-    margin: 10,
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 5,
+    justifyContent: 'center',
+  },
+  googleButtonText: {
+    color: 'black',
   },
 });
